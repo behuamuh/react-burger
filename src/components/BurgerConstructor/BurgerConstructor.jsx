@@ -18,15 +18,16 @@ function BurgerConstractor() {
         />
 
         <ul className={`${stylesConstructor.list} custom-scroll`}>
-          {data.map(item => {
+          {data.map((item, index) => {
             if (item.type === 'main' || item.type === 'sauce') 
               return (
-              <li className={`${stylesConstructor.item} mt-4 pr-5`} key={item._id}>
+              <li className={`${stylesConstructor.item} mt-4 pr-5`} key={index}>
                 <DragIcon/>
                 <ConstructorElement
                 text={item.name}
                 price={item.price}
                 thumbnail={item.image}
+                
                 />
               </li>
             )

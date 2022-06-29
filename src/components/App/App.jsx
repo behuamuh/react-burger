@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './App.module.css';
-import AppHeader from './components/AppHeader/AppHeader';
-import BurgerConstractor from './components/BurgerConstructor/BurgerConstructor';
-import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients';
+import AppHeader from '../AppHeader/AppHeader';
+import BurgerConstractor from '../BurgerConstructor/BurgerConstructor';
+import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 
 
 function App() {

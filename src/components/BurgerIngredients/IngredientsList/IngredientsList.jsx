@@ -11,13 +11,19 @@ function IngredientsList(props) {
             <p className='text text_type_main-medium mt-10 mb-6'>{props.category.name}</p>
             <ul className={styleIngredientList.list}>
                 {items.map(item => (
-                    <IngredientsItem key={item.id} item={item}/>
+                    <IngredientsItem key={item._id} item={item}/>
                 ))}
             </ul>
         </li>
     )
 }
 IngredientsList.propTypes = {
-    category: PropTypes.object.isRequired
+    category: PropTypes.object.isRequired, 
+    data: PropTypes.objectOf(PropTypes.shape({
+     _id: PropTypes.string.isRequired,
+     name: PropTypes.string.isRequired
+    }))
+    
 }
+
 export default IngredientsList;

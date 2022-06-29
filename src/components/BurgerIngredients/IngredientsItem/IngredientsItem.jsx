@@ -17,9 +17,9 @@ function IngredientsItem(props) {
         </li>
     )
 }
-
 IngredientsItem.propTypes = {
     item: PropTypes.object.isRequired
 }
+
 
 export default IngredientsItem;

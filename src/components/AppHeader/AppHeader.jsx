@@ -9,7 +9,7 @@ import stylesHeader from './AppHeader.module.css';
 
 function AppHeader() {
     return (
-        <header className={`${stylesHeader.header} m-10`}>
+        <header className={stylesHeader.header}>
             <nav className={`${stylesHeader.nav} pt-4 pb-4`}>
                 <ul className={stylesHeader.headerList}>
                     <li className={stylesHeader.headerItem}>
