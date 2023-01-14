@@ -27,9 +27,8 @@ const IngredientsList = React.forwardRef((props, ref) => {
 
 IngredientsList.propTypes = {
     id: PropTypes.string.isRequired,
-    ingredients: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
-    ingredients: PropTypes.arrayOf(itemPropTypes),
+    ingredients: PropTypes.arrayOf(itemPropTypes).isRequired,
 }
 
 export default IngredientsList;

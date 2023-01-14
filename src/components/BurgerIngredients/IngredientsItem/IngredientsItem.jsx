@@ -1,5 +1,5 @@
 import styleIngredients from './IngredientsItem.module.css';
-import React from 'react';
+import React, { useCallback } from 'react';
 import itemPropTypes from '../../../utils/prop-types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../../Modal/Modal';
@@ -10,10 +10,15 @@ import IngredientDetails from '../../IngredientDetails/IngredientDetails';
 function IngredientsItem({ ingredient }) {
     const [modal, setModal] = React.useState(false);
 
-    function toggleModal(e) {
+    const toggleModal = useCallback((e) => {
         e.stopPropagation();
         setModal((prevModal) => !prevModal);
-    }
+    },[])
+    
+    /*function toggleModal(e) {
+        e.stopPropagation();
+        setModal((prevModal) => !prevModal);
+    }*/
 
     return (
         <li className={`${styleIngredients.item} mb-8`} onClick={toggleModal}>
