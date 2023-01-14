@@ -1,9 +1,21 @@
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react';
-import data from '../../utils/data';
+import useState from 'react';
+import IngredientsItem from '../BurgerIngredients/IngredientsItem/IngredientsItem';
 import stylesConstructor from './BurgerConstractor.module.css';
+import OrderDetails from '../OrderDetails/OrderDetails';
+import Modal from '../Modal/Modal';
+import itemPropTypes from '../../utils/prop-types';
+import PropTypes from 'prop-types';
 
-function BurgerConstractor() {
+
+function BurgerConstractor({data}) {
+  const [modal, setModal] = React.useState(false);
+
+  function toggleModal() {
+    setModal((prevModal) => !prevModal);
+  }
+
   return (
     <section className={`${stylesConstructor.section} ml-10 mt-20`}>
       
@@ -49,11 +61,22 @@ function BurgerConstractor() {
           <p className='text text_type_digits-medium mr2'>1981</p>
           <CurrencyIcon/>
         </div>
-        <Button type='primary' size='large'>Оформить заказ</Button>
+        <Button type='primary' size='large' onClick={toggleModal}>Оформить заказ</Button>
+        {modal && (
+          <Modal onCloseModal={toggleModal}>
+            <OrderDetails/>
+          </Modal>
+        )
+
+        }
       </div>
 
     </section>
   )
+}
+
+BurgerConstractor.propTypes = {
+  data: PropTypes.arrayOf(itemPropTypes).isRequired,
 }
 
 export default BurgerConstractor;
