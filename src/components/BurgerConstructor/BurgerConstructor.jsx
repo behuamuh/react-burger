@@ -1,20 +1,66 @@
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import React from 'react';
+import { React, useContext, useMemo, useEffect } from 'react';
 import useState from 'react';
 import IngredientsItem from '../BurgerIngredients/IngredientsItem/IngredientsItem';
 import stylesConstructor from './BurgerConstractor.module.css';
-import OrderDetails from '../OrderDetails/OrderDetails';
-import Modal from '../Modal/Modal';
 import itemPropTypes from '../../utils/prop-types';
 import PropTypes from 'prop-types';
+import { BurgerConstructorContext } from '../../utils/burger-constructor-context';
+import { BurgerIngredientsContext } from '../../utils/burger-ingredients-context';
+import ConstructorOrder from '../ConstracturOrder/ConstructorOrder';
+import { FinalPriceContext } from '../../utils/burger-ingredients-context';
 
 
-function BurgerConstractor({data}) {
-  const [modal, setModal] = React.useState(false);
+function BurgerConstractor() { 
+  const ingredients = useContext(BurgerIngredientsContext); 
+  const { constructorContext, setConstructorContext } = useContext(
+    BurgerConstructorContext
+  );
 
-  function toggleModal() {
-    setModal((prevModal) => !prevModal);
-  }
+
+
+  const getIngredient = useMemo(() => { 
+    return ingredients.slice(0, Math.round(Math.random() * 7) + 3);
+  }, [ingredients]);
+
+  const getBun = useMemo(() => {
+    return getIngredient.find((item) => item.type === 'bun');
+  }, [getIngredient]);
+
+  const { getFilling } = useMemo(() => {
+    return getIngredient.reduce(
+      (count, item) => {
+        if (item.type !== 'bun') {
+          count.getFilling.push(item);
+        }
+        return count;
+      }, { getFilling: []}
+    );
+  }, [getIngredient]);
+
+
+
+  const totalPrice = useMemo(() => {
+    let counter =
+    getBun.price * 2 + getFilling.reduce((sum, item) => sum + item.price, 0);
+    return counter;
+  }, [getBun, getFilling]);
+
+  useEffect(() => {
+    setConstructorContext({
+      ...constructorContext,
+      buns: [...constructorContext.buns, getBun],
+      ingredients: getFilling,
+      id: [
+        getBun._id,
+        ...getFilling.map((item) => item._id),
+        getBun._id,
+      ],
+      price: totalPrice,
+    });
+  }, []);
+
+
 
   return (
     <section className={`${stylesConstructor.section} ml-10 mt-20`}>
@@ -23,14 +69,14 @@ function BurgerConstractor({data}) {
         <ConstructorElement
           type='top'
           isLocked={true}
-          text='Краторная булка N-200i (верх)'
-          price={200}
-          thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
+          text={`${getBun.name} (верх)`}
+          price={getBun.price}
+          thumbnail={getBun.image}
 
         />
 
         <ul className={`${stylesConstructor.list} custom-scroll`}>
-          {data.map((item, index) => {
+          {constructorContext.ingredients.map((item, index) => { //заменили дата на ингредиентс
             if (item.type === 'main' || item.type === 'sauce') 
               return (
               <li className={`${stylesConstructor.item} mt-4 pr-5`} key={index}>
@@ -49,34 +95,21 @@ function BurgerConstractor({data}) {
         <ConstructorElement
           type='bottom'
           isLocked={true}
-          text='Краторная булка N-200i (низ)'
-          price={200}
-          thumbnail={'https://code.s3.yandex.net/react/code/bun-02-mobile.png'}
+          text={`${getBun.name} (низ)`}
+          price={getBun.price}
+          thumbnail={getBun.image}
           />
 
         
       </div>
-      <div className={`${stylesConstructor.total} mr-8 mt-10`}>
-        <div className={`${stylesConstructor.price} mr-10`}>
-          <p className='text text_type_digits-medium mr2'>1981</p>
-          <CurrencyIcon/>
-        </div>
-        <Button type='primary' size='large' onClick={toggleModal}>Оформить заказ</Button>
-        {modal && (
-          <Modal onCloseModal={toggleModal}>
-            <OrderDetails/>
-          </Modal>
-        )
 
-        }
-      </div>
+    
+      <ConstructorOrder/>
 
     </section>
   )
 }
 
-BurgerConstractor.propTypes = {
-  data: PropTypes.arrayOf(itemPropTypes).isRequired,
-}
+
 
 export default BurgerConstractor;

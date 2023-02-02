@@ -1,11 +1,14 @@
 import stylesOrder from './OrderDetails.module.css';
 import complited from '../../images/done.svg';
+import { BurgerConstructorContext } from '../../utils/burger-constructor-context';
+import { useContext } from 'react';
 
-function OrderDetails() {
+function OrderDetails({orderNumber}) {
+  
 
    return (
         <>
-        <p className={`${stylesOrder.order_number} text text_type_digits-large mt-30`}>{Math.floor(Math.random() * 100000)}</p>
+        <p className={`${stylesOrder.order} text text_type_digits-large mt-30`}>{orderNumber}</p>
         <p className='text text_type_main-medium mt-8'>идентификатор заказа</p>
         <img className='mt-15 mb-15' src={complited} alt='иконка подтверждения заказа'/>
         <p className='text text_type_main-default mb-2'>Ваш заказ начали готовить</p>
