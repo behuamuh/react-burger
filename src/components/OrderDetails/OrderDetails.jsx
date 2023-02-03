@@ -1,6 +1,6 @@
 import stylesOrder from './OrderDetails.module.css';
 import complited from '../../images/done.svg';
-import { BurgerConstructorContext } from '../../utils/burger-constructor-context';
+import { BurgerConstructorContext } from '../../services/burger-constructor-context';
 import { useContext } from 'react';
 
 function OrderDetails({orderNumber}) {

@@ -1,13 +1,13 @@
 import { useContext, useState } from 'react';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { BurgerConstructorContext } from '../../utils/burger-constructor-context';
+import { BurgerConstructorContext } from '../../services/burger-constructor-context';
 import orderStyles from './ConstructorOrder.module.css';
 import Modal  from '../Modal/Modal';
 import icon from '../../images/Subtract.svg';
 import OrderDetails
  from '../OrderDetails/OrderDetails';
 import { apiOrder } from '../../utils/api';
-import { BurgerIngredientsContext } from '../../utils/burger-ingredients-context';
+import { BurgerIngredientsContext } from '../../services/burger-ingredients-context';
 
 
 
@@ -15,7 +15,7 @@ export default function ConstructorOrder() {
     const [modal, setModal] = useState(false);
     const [ setConstructorContext, setOrder] = useState(0);
     
-    const { constructorContext, ConstructorContext } = useContext(
+    const { constructorContext } = useContext(
       BurgerConstructorContext
     );
     
@@ -35,7 +35,7 @@ export default function ConstructorOrder() {
        .then(() => {
         toggleModal();
        })
-       .catch((err) => console.log(`fucking err again! ${err}`))
+       .catch((err) => console.log(`Ошибка при отправке заказа ${err}`))
     }
 
 

@@ -4,8 +4,8 @@ import AppHeader from '../AppHeader/AppHeader';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import { useState } from 'react';
-import { BurgerConstructorContext } from '../../utils/burger-constructor-context';
-import { BurgerIngredientsContext } from '../../utils/burger-ingredients-context';
+import { BurgerConstructorContext } from '../../services/burger-constructor-context';
+import { BurgerIngredientsContext } from '../../services/burger-ingredients-context';
 import { getIngredients } from '../../utils/api';
 
 

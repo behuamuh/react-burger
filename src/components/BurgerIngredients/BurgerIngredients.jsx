@@ -4,7 +4,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsList from './IngredientsList/IngredientsList';
 import itemPropTypes from '../../utils/prop-types';
 import PropTypes from 'prop-types';
-import { BurgerIngredientsContext } from '../../utils/burger-ingredients-context';
+import { BurgerIngredientsContext } from '../../services/burger-ingredients-context';
 
 
 

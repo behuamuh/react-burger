@@ -5,10 +5,10 @@ import IngredientsItem from '../BurgerIngredients/IngredientsItem/IngredientsIte
 import stylesConstructor from './BurgerConstractor.module.css';
 import itemPropTypes from '../../utils/prop-types';
 import PropTypes from 'prop-types';
-import { BurgerConstructorContext } from '../../utils/burger-constructor-context';
-import { BurgerIngredientsContext } from '../../utils/burger-ingredients-context';
+import { BurgerConstructorContext } from '../../services/burger-constructor-context';
+import { BurgerIngredientsContext } from '../../services/burger-ingredients-context';
 import ConstructorOrder from '../ConstracturOrder/ConstructorOrder';
-import { FinalPriceContext } from '../../utils/burger-ingredients-context';
+import { FinalPriceContext } from '../../services/burger-ingredients-context';
 
 
 function BurgerConstractor() { 
@@ -17,7 +17,7 @@ function BurgerConstractor() {
     BurgerConstructorContext
   );
 
-
+  
 
   const getIngredient = useMemo(() => { 
     return ingredients.slice(0, Math.round(Math.random() * 7) + 3);
@@ -41,7 +41,7 @@ function BurgerConstractor() {
 
 
   const totalPrice = useMemo(() => {
-    let counter =
+    const counter =
     getBun.price * 2 + getFilling.reduce((sum, item) => sum + item.price, 0);
     return counter;
   }, [getBun, getFilling]);
@@ -76,7 +76,7 @@ function BurgerConstractor() {
         />
 
         <ul className={`${stylesConstructor.list} custom-scroll`}>
-          {constructorContext.ingredients.map((item, index) => { //заменили дата на ингредиентс
+          {constructorContext.ingredients.map((item, index) => {
             if (item.type === 'main' || item.type === 'sauce') 
               return (
               <li className={`${stylesConstructor.item} mt-4 pr-5`} key={index}>
