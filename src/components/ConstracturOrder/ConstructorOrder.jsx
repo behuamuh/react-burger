@@ -1,62 +1,40 @@
-import { useContext, useState } from 'react';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { BurgerConstructorContext } from '../../services/burger-constructor-context';
+import { useSelector, useDispatch } from 'react-redux';
 import orderStyles from './ConstructorOrder.module.css';
 import Modal  from '../Modal/Modal';
 import icon from '../../images/Subtract.svg';
 import OrderDetails
  from '../OrderDetails/OrderDetails';
-import { apiOrder } from '../../utils/api';
-import { BurgerIngredientsContext } from '../../services/burger-ingredients-context';
+ import { RESET_ORDER } from '../../services/actions/currentOrderAction';
+ import { makeOrder } from '../../services/actions/currentOrderAction';
 
 
 
-export default function ConstructorOrder() {
-    const [modal, setModal] = useState(false);
-    const [ setConstructorContext, setOrder] = useState(0);
+
+
+export default function ConstructorOrder({ price }) {
+   const order = useSelector((store) => store.currentOrderReducer.order);
+   const dispatch = useDispatch();
+   const ingredients = useSelector((store) => store.burgerConstructorReducer);
     
-    const { constructorContext } = useContext(
-      BurgerConstructorContext
-    );
-    
- 
+   function closeModal() {
+    dispatch({ type: RESET_ORDER });
+   }
 
-    const ingredients = useContext(BurgerIngredientsContext);
-
-
-
-    function makeOrder()  {
-      const arrayId = ingredients.map((item) => item._id.toString());
-      apiOrder(arrayId)
-       .then((res) => {
-        setOrder(res.order.number);
-     
-       })
-       .then(() => {
-        toggleModal();
-       })
-       .catch((err) => console.log(`Ошибка при отправке заказа ${err}`))
-    }
-
-
-
-    function toggleModal() {
-        setModal((prevModal) => !prevModal);
-    }
-    return (
+   return (
         <div className={orderStyles.order}>
       <div className={orderStyles.price}>
         <p className="text text_type_digits-medium">
-        {constructorContext.price}
+        {price}
         </p>
         <img src={icon} alt="Знак валюты" />
       </div>
-      <Button htmlType="button" type="primary" size="large" onClick={makeOrder}>
+      <Button htmlType="button" type="primary" size="large" onClick={() => dispatch(makeOrder(ingredients))} disabled={!ingredients.constructorBunElement}>
         Оформить заказ
       </Button>
-      {modal && (
-        <Modal onCloseModal={toggleModal}>
-          <OrderDetails orderNumber={setConstructorContext}/>
+      {order && (
+        <Modal onCloseModal={closeModal}>
+          <OrderDetails />
         </Modal>
       )}
     </div>

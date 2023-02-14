@@ -11,6 +11,8 @@ const checkResponse = (res) => {
     return fetch(`${BASE_URL}`).then(checkResponse);
 }
 
+
+
  const apiOrder = async (arrayId) => {
     return fetch(`${ORDER_URL}`, {
         method: 'POST',

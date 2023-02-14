@@ -1,110 +1,102 @@
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { React, useContext, useMemo, useEffect } from 'react';
-import useState from 'react';
-import IngredientsItem from '../BurgerIngredients/IngredientsItem/IngredientsItem';
+import {  useMemo, useEffect } from 'react';
+import { useDrop } from 'react-dnd';
 import stylesConstructor from './BurgerConstractor.module.css';
 import itemPropTypes from '../../utils/prop-types';
 import PropTypes from 'prop-types';
-import { BurgerConstructorContext } from '../../services/burger-constructor-context';
-import { BurgerIngredientsContext } from '../../services/burger-ingredients-context';
+import ConstructorFillingList from './ConstructorFillingList';
+import { useSelector, useDispatch } from 'react-redux';
 import ConstructorOrder from '../ConstracturOrder/ConstructorOrder';
-import { FinalPriceContext } from '../../services/burger-ingredients-context';
+import { ADD_INGREDIENT, SORT_INGREDIENT } from '../../services/actions/burgerConstructorAction';
+import loader from '../../images/loader.svg';
+import { Reorder } from "framer-motion";
+import { v4 as uuidv4 } from 'uuid';
 
 
-function BurgerConstractor() { 
-  const ingredients = useContext(BurgerIngredientsContext); 
-  const { constructorContext, setConstructorContext } = useContext(
-    BurgerConstructorContext
-  );
+function BurgerConstructor() { 
+  
+ const dispatch = useDispatch();
 
+ const { bun, fillingList } = useSelector((store) => ({
+  bun: store.burgerConstructorReducer.constructorBunElement,
+  fillingList: store.burgerConstructorReducer.constructorFillingList,
+ }))
   
 
-  const getIngredient = useMemo(() => { 
-    return ingredients.slice(0, Math.round(Math.random() * 7) + 3);
-  }, [ingredients]);
 
-  const getBun = useMemo(() => {
-    return getIngredient.find((item) => item.type === 'bun');
-  }, [getIngredient]);
+ function dropHandler(ingredient) {
+  dispatch({ type: ADD_INGREDIENT, id: uuidv4(), payload: ingredient});
+ }
 
-  const { getFilling } = useMemo(() => {
-    return getIngredient.reduce(
-      (count, item) => {
-        if (item.type !== 'bun') {
-          count.getFilling.push(item);
-        }
-        return count;
-      }, { getFilling: []}
-    );
-  }, [getIngredient]);
+ const [{ isHover }, dropTarget] = useDrop({
+  accept: 'ingredients',
+  drop(ingredient) {
+    dropHandler(ingredient);
+  },
+  collect: (monitor) => ({
+    isHover: monitor.isOver(),
+  }),
+ });
 
+ const bunPrice = useMemo(() => {
+  return bun === undefined ? 0 : bun.price * 2;
+ }, [bun]);
 
+ const fillingPrice = useMemo(() => {
+  return fillingList.reduce((sum, item) => sum + item.price, 0);
+ }, [fillingList]);
 
-  const totalPrice = useMemo(() => {
-    const counter =
-    getBun.price * 2 + getFilling.reduce((sum, item) => sum + item.price, 0);
-    return counter;
-  }, [getBun, getFilling]);
-
-  useEffect(() => {
-    setConstructorContext({
-      ...constructorContext,
-      buns: [...constructorContext.buns, getBun],
-      ingredients: getFilling,
-      id: [
-        getBun._id,
-        ...getFilling.map((item) => item._id),
-        getBun._id,
-      ],
-      price: totalPrice,
-    });
-  }, []);
+ const totalPrice = useMemo(() => {
+  return bun === undefined ? fillingPrice : bunPrice + fillingPrice;
+ }, [bunPrice, bun, fillingPrice])
 
 
-
-  return (
+ return (
     <section className={`${stylesConstructor.section} ml-10 mt-20`}>
       
-      <div className={stylesConstructor.container}>
-        <ConstructorElement
-          type='top'
-          isLocked={true}
-          text={`${getBun.name} (верх)`}
-          price={getBun.price}
-          thumbnail={getBun.image}
-
-        />
-
-        <ul className={`${stylesConstructor.list} custom-scroll`}>
-          {constructorContext.ingredients.map((item, index) => {
-            if (item.type === 'main' || item.type === 'sauce') 
-              return (
-              <li className={`${stylesConstructor.item} mt-4 pr-5`} key={index}>
-                <DragIcon/>
-                <ConstructorElement
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-                
-                />
-              </li>
-            )
-          }
-          )}
-        </ul>
-        <ConstructorElement
-          type='bottom'
-          isLocked={true}
-          text={`${getBun.name} (низ)`}
-          price={getBun.price}
-          thumbnail={getBun.image}
+      <ul
+        ref={dropTarget}
+        className={isHover ? stylesConstructor.list_hover : stylesConstructor.list}
+      >
+      <ConstructorElement
+        type="top"
+        isLocked={true}
+        text={bun === undefined ? "Выберите булку" : `${bun.name} (верх)`}
+        price={bun === undefined ? 0 : bun.price}
+        extraClass="ml-8"
+        thumbnail={bun === undefined ? loader : bun.image}
+    />
+    <Reorder.Group
+      axis="y"
+      values={fillingList}
+      className={stylesConstructor.container}
+      onReorder={(sortFillingList) =>
+        dispatch({ type: SORT_INGREDIENT, payload: sortFillingList })
+      }
+    >
+      {fillingList.map((item) => {
+        return (
+          <ConstructorFillingList
+            key={item.constructorItemId}
+            filling={item}
           />
-
+        );
+      })}
+    </Reorder.Group>
+    <ConstructorElement
+      type="bottom"
+      isLocked={true}
+      text={bun === undefined ? "Выберите булку" : `${bun.name} (низ)`}
+      price={bun === undefined ? 0 : bun.price}
+      extraClass="ml-8"
+      thumbnail={bun === undefined ? loader : bun.image}
+    />
+  </ul>
         
-      </div>
+   
 
     
-      <ConstructorOrder/>
+      <ConstructorOrder price={totalPrice}/>
 
     </section>
   )
@@ -112,4 +104,4 @@ function BurgerConstractor() {
 
 
 
-export default BurgerConstractor;
+export default BurgerConstructor;

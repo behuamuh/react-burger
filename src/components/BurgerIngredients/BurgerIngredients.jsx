@@ -1,18 +1,39 @@
-import { React, useMemo, useState, useEffect, useContext } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import stylesIngredients from './BurgerIngredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsList from './IngredientsList/IngredientsList';
 import itemPropTypes from '../../utils/prop-types';
 import PropTypes from 'prop-types';
-import { BurgerIngredientsContext } from '../../services/burger-ingredients-context';
+import { useSelector, useDispatch } from 'react-redux';
+import Modal from '../Modal/Modal';
+import { RESET_CURRENT_INGREDIENT } from '../../services/actions/currentIngredientAction';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import { useInView } from 'react-intersection-observer';
 
-
-
-
- function BurgerIngredients() { 
+function BurgerIngredients() { 
   const [current, setCurrent] = useState('one');
+  const ingredients = useSelector((store) => store.burgerIngredientsReducer.burgerIngredientsList);
+  
+  const [bunTabRef, inViewTabBun] = useInView({ threshold: 0 });
+  const [sauceTabRef, inViewTabSauce] = useInView({ threshold: 0 });
+  const [mainTabRef, inViewTabMain] = useInView({ threshold: 0 });
+  
+  const dispatch = useDispatch();
+  
+  function closeModal(e) {
+    e.stopPropagation();
+    dispatch({ type: RESET_CURRENT_INGREDIENT});
+  }
 
-  const ingredients = useContext(BurgerIngredientsContext);
+  useEffect(() => {
+    if(inViewTabBun) {
+      setCurrent('bun');
+    } else if (inViewTabSauce) {
+      setCurrent('sauce');
+    } else {
+      setCurrent('main');
+    }
+  }, [inViewTabBun, inViewTabSauce, inViewTabMain]);
 
   const { buns, mains, sauces } = useMemo(() => {
     return ingredients.reduce(
@@ -34,20 +55,26 @@ import { BurgerIngredientsContext } from '../../services/burger-ingredients-cont
     );
   }, [ingredients]);
 
+  function changeIngredients(id) {
+    setCurrent(id);
+    document.querySelector(`#${id}`).scrollIntoView({behavior: 'smooth'});
+  }
+
+  const currentIngredient = useSelector((store) => store.currentIngredientReducer.currentIngredient);
   
 
   return (
     <section className={stylesIngredients.section}>
     <h1 className='text text_type_main-large mb-5'>Соберите бургер</h1>
           <div className={stylesIngredients.menu}> 
-          <Tab value='one' active={current === 'one'} onClick={setCurrent}>
+          <Tab value='bun' active={current === 'bun'} onClick={changeIngredients}>
                 Булки
             </Tab>
 
-            <Tab value='two' active={current === 'two'} onClick={setCurrent}>
+            <Tab value='sauce' active={current === 'sauce'} onClick={changeIngredients}>
                 Соусы
             </Tab>
-            <Tab value='three' active={current === 'three'} onClick={setCurrent}>
+            <Tab value='main' active={current === 'main'} onClick={changeIngredients}>
                 Начинки
             </Tab>
     </div>
@@ -56,23 +83,31 @@ import { BurgerIngredientsContext } from '../../services/burger-ingredients-cont
           title="Булки"
           id="bun"
           type="bun"
+          ref={bunTabRef}
           ingredients={buns}
         />
         <IngredientsList
           title="Соусы"
           id="sauce"
           type="sauce"
+          ref={sauceTabRef}
           ingredients={sauces}
         />
         <IngredientsList
           title="Начинки"
           id="main"
           type="main"
+          ref={mainTabRef}
           ingredients={mains}
         />
     </div>
+    {currentIngredient && (
+      <Modal onCloseModal={closeModal}>
+        <IngredientDetails/>
+      </Modal>
+    )}
     </section>
-  )
+  );
 }
 
 export default BurgerIngredients;
