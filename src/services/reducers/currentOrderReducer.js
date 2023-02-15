@@ -8,7 +8,7 @@ import {
 const currentOrderInitialState = {
     order: undefined,
     orderRequest: false,
-    orderError: false,
+    orderError: null,
     orderErrorText: undefined,
 };
 
@@ -18,12 +18,12 @@ export default function currentOrderReducer(
 ) {
     switch (action.type) {
         case GET_ORDER_REQUEST:
-            return { ...state, orderRequest: true};
+            return { ...state, orderRequest: true, orderError: null};
         case GET_ORDER_SUCCESS:
             return {
                 ...state,
                 orderRequest: false,
-                orderError: false,
+                orderError: null,
                 order: action.payload,
             };
         case GET_ORDER_ERROR:
