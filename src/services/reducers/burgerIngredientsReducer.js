@@ -6,20 +6,20 @@ import {
     const ingredientsInitialState = {
         burgerIngredientsList: [],
         burgerIngredientsListRequest: false,
-        burgerIngredientsListError: false,
+        burgerIngredientsListError: null,
         burgerIngredientsListErrorText: undefined,
     };
 
     export default function burgerIngredientsReducer( state = ingredientsInitialState, action) {
         switch (action.type) {
             case GET_INGREDIENTS_REQUEST:
-                return { ...state, burgerIngredientsListRequest: true};
+                return { ...state, burgerIngredientsListRequest: true, burgerIngredientsListError: null};
             case GET_INGREDIENTS_SUCCESS:
                 return {
                     ...state,
                     burgerIngredientsList: action.payload,
                     burgerIngredientsListRequest: false,
-                    burgerIngredientsListError: false,
+                    burgerIngredientsListError: null,
                 };
              case GET_INGREDIENTS_ERROR:
                return {

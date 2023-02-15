@@ -25,7 +25,7 @@ function BurgerConstructor() {
 
 
  function dropHandler(ingredient) {
-  dispatch({ type: ADD_INGREDIENT, id: uuidv4(), payload: ingredient});
+  dispatch({ type: ADD_INGREDIENT, constructorItemId: uuidv4(), payload: ingredient});
  }
 
  const [{ isHover }, dropTarget] = useDrop({
@@ -79,7 +79,8 @@ function BurgerConstructor() {
           <ConstructorFillingList
             key={item.constructorItemId}
             filling={item}
-          />
+            
+          /> 
         );
       })}
     </Reorder.Group>
@@ -101,7 +102,6 @@ function BurgerConstructor() {
     </section>
   )
 }
-
 
 
 export default BurgerConstructor;
