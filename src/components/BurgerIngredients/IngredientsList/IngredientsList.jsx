@@ -14,7 +14,7 @@ const IngredientsList = React.forwardRef((props, ref) => {
       </p>
       <ul className={styleIngredientList.list}>
         {props.ingredients.map((item) => {
-            return <IngredientsItem key={item._id} ingredient={item}/>
+            return <IngredientsItem key={item._id} ingredient={item}/> 
         })}
       </ul>
       

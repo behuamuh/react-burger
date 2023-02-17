@@ -1,8 +1,10 @@
 import stylesIngredinentDetails from './IngredientDetails.module.css';
 import itemPropTypes from '../../utils/prop-types';
+import { useSelector } from 'react-redux';
 
 
-function IngredientDetails({ ingredient }) {
+function IngredientDetails() { //попап с наполнителем
+  const ingredient = useSelector((store) => store.currentIngredientReducer.currentIngredient);
     return (
         <>
           <p className={`${stylesIngredinentDetails.title} text text_type_main-large`}>Детали ингредиента</p>
@@ -41,8 +43,6 @@ function IngredientDetails({ ingredient }) {
     )
 }
 
-IngredientDetails.propTypes = {
-  ingredient: itemPropTypes,
-}
+
 
 export default IngredientDetails;

@@ -1,82 +1,107 @@
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import React from 'react';
-import useState from 'react';
-import IngredientsItem from '../BurgerIngredients/IngredientsItem/IngredientsItem';
+import {  useMemo, useEffect } from 'react';
+import { useDrop } from 'react-dnd';
 import stylesConstructor from './BurgerConstractor.module.css';
-import OrderDetails from '../OrderDetails/OrderDetails';
-import Modal from '../Modal/Modal';
 import itemPropTypes from '../../utils/prop-types';
 import PropTypes from 'prop-types';
+import ConstructorFillingList from './ConstructorFillingList';
+import { useSelector, useDispatch } from 'react-redux';
+import ConstructorOrder from '../ConstracturOrder/ConstructorOrder';
+import { ADD_INGREDIENT, SORT_INGREDIENT } from '../../services/actions/burgerConstructorAction';
+import loader from '../../images/loader.svg';
+import { Reorder } from "framer-motion";
+import { v4 as uuidv4 } from 'uuid';
 
 
-function BurgerConstractor({data}) {
-  const [modal, setModal] = React.useState(false);
+function BurgerConstructor() { 
+  
+ const dispatch = useDispatch();
 
-  function toggleModal() {
-    setModal((prevModal) => !prevModal);
-  }
+ const { bun, fillingList } = useSelector((store) => ({
+  bun: store.burgerConstructorReducer.constructorBunElement,
+  fillingList: store.burgerConstructorReducer.constructorFillingList,
+ }))
+  
 
-  return (
+
+ function dropHandler(ingredient) {
+  dispatch({ type: ADD_INGREDIENT, constructorItemId: uuidv4(), payload: ingredient});
+ }
+
+ const [{ isHover }, dropTarget] = useDrop({
+  accept: 'ingredients',
+  drop(ingredient) {
+    dropHandler(ingredient);
+  },
+  collect: (monitor) => ({
+    isHover: monitor.isOver(),
+  }),
+ });
+
+ const bunPrice = useMemo(() => {
+  return bun === undefined ? 0 : bun.price * 2;
+ }, [bun]);
+
+ const fillingPrice = useMemo(() => {
+  return fillingList.reduce((sum, item) => sum + item.price, 0);
+ }, [fillingList]);
+
+ const totalPrice = useMemo(() => {
+  return bun === undefined ? fillingPrice : bunPrice + fillingPrice;
+ }, [bunPrice, bun, fillingPrice])
+
+
+ return (
     <section className={`${stylesConstructor.section} ml-10 mt-20`}>
       
-      <div className={stylesConstructor.container}>
-        <ConstructorElement
-          type='top'
-          isLocked={true}
-          text='Краторная булка N-200i (верх)'
-          price={200}
-          thumbnail={'https://code.s3.yandex.net/react/code/bun-02.png'}
-
-        />
-
-        <ul className={`${stylesConstructor.list} custom-scroll`}>
-          {data.map((item, index) => {
-            if (item.type === 'main' || item.type === 'sauce') 
-              return (
-              <li className={`${stylesConstructor.item} mt-4 pr-5`} key={index}>
-                <DragIcon/>
-                <ConstructorElement
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
-                
-                />
-              </li>
-            )
-          }
-          )}
-        </ul>
-        <ConstructorElement
-          type='bottom'
-          isLocked={true}
-          text='Краторная булка N-200i (низ)'
-          price={200}
-          thumbnail={'https://code.s3.yandex.net/react/code/bun-02-mobile.png'}
-          />
-
+      <ul
+        ref={dropTarget}
+        className={isHover ? stylesConstructor.list_hover : stylesConstructor.list}
+      >
+      <ConstructorElement
+        type="top"
+        isLocked={true}
+        text={bun === undefined ? "Выберите булку" : `${bun.name} (верх)`}
+        price={bun === undefined ? 0 : bun.price}
+        extraClass="ml-8"
+        thumbnail={bun === undefined ? loader : bun.image}
+    />
+    <Reorder.Group
+      axis="y"
+      values={fillingList}
+      className={stylesConstructor.container}
+      onReorder={(sortFillingList) =>
+        dispatch({ type: SORT_INGREDIENT, payload: sortFillingList })
+      }
+    >
+      {fillingList.map((item) => {
+        return (
+          <ConstructorFillingList
+            key={item.constructorItemId}
+            filling={item}
+            
+          /> 
+        );
+      })}
+    </Reorder.Group>
+    <ConstructorElement
+      type="bottom"
+      isLocked={true}
+      text={bun === undefined ? "Выберите булку" : `${bun.name} (низ)`}
+      price={bun === undefined ? 0 : bun.price}
+      extraClass="ml-8"
+      thumbnail={bun === undefined ? loader : bun.image}
+    />
+  </ul>
         
-      </div>
-      <div className={`${stylesConstructor.total} mr-8 mt-10`}>
-        <div className={`${stylesConstructor.price} mr-10`}>
-          <p className='text text_type_digits-medium mr2'>1981</p>
-          <CurrencyIcon/>
-        </div>
-        <Button type='primary' size='large' onClick={toggleModal}>Оформить заказ</Button>
-        {modal && (
-          <Modal onCloseModal={toggleModal}>
-            <OrderDetails/>
-          </Modal>
-        )
+   
 
-        }
-      </div>
+    
+      <ConstructorOrder price={totalPrice}/>
 
     </section>
   )
 }
 
-BurgerConstractor.propTypes = {
-  data: PropTypes.arrayOf(itemPropTypes).isRequired,
-}
 
-export default BurgerConstractor;
+export default BurgerConstructor;

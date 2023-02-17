@@ -45,12 +45,11 @@ function Modal({children, onCloseModal}) {
     );
 }
 
-
-
-
-export default Modal;
-
 Modal.propTypes = {
   onCloseModal: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
 }
+
+
+export default Modal;
+
