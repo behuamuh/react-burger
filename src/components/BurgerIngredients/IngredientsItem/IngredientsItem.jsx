@@ -7,38 +7,12 @@ import IngredientDetails from '../../IngredientDetails/IngredientDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_CURRENT_INGREDIENT } from '../../../services/actions/currentIngredientAction';
 import { useDrag } from 'react-dnd';
+import { Link} from 'react-router-dom';
 
 
 
 
-function IngredientsItem({ ingredient }) { 
-    /*const [modal, setModal] = React.useState(false);
-
-    const toggleModal = useCallback((e) => {
-        e.stopPropagation();
-        setModal((prevModal) => !prevModal);
-    },[])
-    
-    function toggleModal(e) {
-        e.stopPropagation();
-        setModal((prevModal) => !prevModal);
-    }
-      return (
-        <li className={`${styleIngredients.item} mb-8`} onClick={toggleModal}>
-        <img src={ingredient.image} alt={ingredient.name}/>
-        <div className={`${styleIngredients.price} mt-2`}>
-        <p className='text text_type_digits-default mr-2'>{ingredient.price}</p>
-        <CurrencyIcon type='primery'/></div>
-        <p className={`${styleIngredients.heading} text text_type_main-default mt-2`}>{ingredient.name}</p>
-            <Counter count={1} size='default'/>
-        {modal && (
-            <Modal onCloseModal={toggleModal}>
-                <IngredientDetails ingredient={ingredient}/>
-            </Modal>
-        )}    
-        </li>
-    )*/
-
+function IngredientsItem({ ingredient }) { //card
     const dispatch = useDispatch();
     const constructorIngredients = useSelector((store) => store.burgerConstructorReducer);
     const burgerIngredients = useSelector((store) => store.burgerIngredientsReducer);
@@ -68,17 +42,18 @@ function IngredientsItem({ ingredient }) {
     const getIngredientCounter = (ingredientId) => counter[ingredientId];
 
     return (
-        <li ref={dragRef} className={`${styleIngredients.item} mb-8`} onClick={openModal}>
+        <li to={`/ingredients/${ingredient._id}`} ref={dragRef} className={`${styleIngredients.item} mb-8`} onClick={openModal}>
             {getIngredientCounter(ingredient._id) !== 0 && (
                 <Counter count={getIngredientCounter(ingredient._id)} size='default'/>
             )}
+        
         <img ref={dragPreviewRef} className={styleIngredients.img} src={ingredient.image} alt={ingredient.name}/>
         <div className={`${styleIngredients.price} mt-2`}>
         <p className='text text_type_digits-default mr-2'>{ingredient.price}</p>
         <CurrencyIcon type='primery'/></div>
         <p className={`${styleIngredients.heading} text text_type_main-default mt-2`}>{ingredient.name}</p>
          
-       
+    
         </li>
     )
     

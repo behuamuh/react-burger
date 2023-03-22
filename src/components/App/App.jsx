@@ -1,44 +1,47 @@
-import { useEffect } from 'react';
-import styles from './App.module.css';
-import AppHeader from '../AppHeader/AppHeader';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import { useDispatch  } from 'react-redux';
+import HomePage from '../../pages/main';
+import LoginPage from '../../pages/login';
+import { Routes, Route } from 'react-router-dom';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import { useDispatch, useSelector } from 'react-redux';
 import { getIngredient } from '../../services/actions/burgerIngredientsAction';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-
+import { useEffect } from 'react';
+import RegisterPage from '../../pages/register';
+import ForgottenPasswordPage from '../../pages/forgot-password';
+import ResetPasswordPage from '../../pages/reset-password-page';
+import ProfilePage from '../../pages/profile';
+import IngredientsPage from '../../pages/ingredients-page';
+import ProtectedRoute from '../Protected-route/ProtectedRoute';
+import { checkUserAccess } from '../../services/actions/userAction';
 
 
 function App() {
 
 const dispatch = useDispatch();
-/*const { loading, error, errorText } = useSelector((store) => ({
-  loading: store.burgerIngredientsReducer.burgerIngredientsListRequest,
-  error: store.burgerIngredientsReducer.burgerIngredientsListError,
-  errorText: store.burgerIngredientsReducer.burgerIngredientsListErrorText,
-}));*/
-
-
 
 useEffect(() => {
   dispatch(getIngredient());
-}, [dispatch])
+  dispatch(checkUserAccess());
+}, [])
+
+const { isAuth, resetEmailSent } = useSelector((store) => ({
+  isAuth: store.userReducer.isAuth,
+  resetEmailSent: store.userReducer.resetEmailSent,
+}));
 
 
-
-  return (
-    <div className={`${styles.App} custom-scroll`}>
-    <AppHeader />
-    <DndProvider backend={HTML5Backend}>
-      <main className={styles.content}>
-        <BurgerIngredients />
-        <BurgerConstructor />
-      </main>
-      </DndProvider>
-      </div>
- 
-
+return (
+   
+    <Routes>
+    <Route  path='/' element={<HomePage/>}/>
+    <Route  path='/login' element={<ProtectedRoute isAuth={!isAuth} to='/'><LoginPage/></ProtectedRoute>}/>
+    <Route path='/register' element={<ProtectedRoute isAuth={!isAuth} to='/'><RegisterPage/></ProtectedRoute>}/>
+    <Route path='/forgot-password' element={<ProtectedRoute isAuth={!isAuth} to='/'><ForgottenPasswordPage/></ProtectedRoute>}/>
+    <Route path='/reset-password' element={<ProtectedRoute isAuth={resetEmailSent} to="/login"><ResetPasswordPage/></ProtectedRoute>}/>
+    <Route path='/profile' element={<ProtectedRoute isAuth={isAuth} to='/login'><ProfilePage/></ProtectedRoute>}/>
+    <Route path='/ingredients/:id' element={<IngredientsPage/>}/>
+    </Routes>
+  
+    
   );
 }
 
