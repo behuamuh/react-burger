@@ -20,10 +20,10 @@ function BurgerIngredients() {
   
   const dispatch = useDispatch();
   
-  function closeModal(e) {
+ { /*function closeModal(e) {
     e.stopPropagation();
     dispatch({ type: RESET_CURRENT_INGREDIENT});
-  }
+  }*/}
 
   useEffect(() => {
     if(inViewTabBun) {
@@ -59,8 +59,8 @@ function BurgerIngredients() {
     setCurrent(id);
     document.querySelector(`#${id}`).scrollIntoView({behavior: 'smooth'});
   }
-
-  const currentIngredient = useSelector((store) => store.currentIngredientReducer.currentIngredient);
+{
+  /*const currentIngredient = useSelector((store) => store.currentIngredientReducer.currentIngredient);*/}
   
 
   return (
@@ -101,11 +101,11 @@ function BurgerIngredients() {
           ingredients={mains}
         />
     </div>
-    {currentIngredient && (
+  {/*  {currentIngredient && (
       <Modal onCloseModal={closeModal}>
         <IngredientDetails/>
       </Modal>
-    )}
+  )}*/}
     </section>
   );
 }
