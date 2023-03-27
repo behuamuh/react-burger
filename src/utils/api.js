@@ -80,7 +80,7 @@ const logoutUserRequest = async (refreshToken) => {
 }
 
 const checkUserAccessRequest = async (accessToken) => {
-    console.log(accessToken)
+   
     return fetch(CHECK_ACCESS_URL, {
         headers: {
             'Content-Type': 'application/json',

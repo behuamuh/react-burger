@@ -1,9 +1,8 @@
 import { Input, Button, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import AppHeader from "../components/AppHeader/AppHeader";
 import style from './reset-password-page.module.css';
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from 'react-router-dom';
-import { setResetPasswordFormValue, resetPassword } from "../services/actions/userAction";
+import { setResetPasswordFormValue, resetPassword } from "../../services/actions/userAction";
 
 
 export default function ResetPasswordPage() {
@@ -23,7 +22,7 @@ export default function ResetPasswordPage() {
 
     return (
         <>
-        <AppHeader/>
+     
         <section className={style.section}>
             <div className={style.container}>
                 <p className='text text_type_main-medium mb-6'>Восстановление пароля</p>

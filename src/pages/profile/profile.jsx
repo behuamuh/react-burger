@@ -3,9 +3,8 @@ import { NavLink, useNavigate, useLocation, Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import style from './profile.module.css';
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import AppHeader from "../components/AppHeader/AppHeader";
-import { getCookie } from "../utils/cookie";
-import { logoutUser, changeUserData } from "../services/actions/userAction";
+import { getCookie } from "../../utils/cookie";
+import { logoutUser, changeUserData } from "../../services/actions/userAction";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -36,7 +35,7 @@ export default function ProfilePage() {
 
     return (
         <>
-        <AppHeader/>
+        
         <section className={style.section}>
             <div className={style.container}>
             <div className={style.column__nav}>

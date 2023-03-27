@@ -1,9 +1,9 @@
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import React from 'react';
-import AppHeader from '../components/AppHeader/AppHeader';
+import AppHeader from '../../components/AppHeader/AppHeader';
 import styles from './login.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { setLoginFormValue, loginUser } from '../services/actions/userAction';
+import { setLoginFormValue, loginUser } from '../../services/actions/userAction';
 import { useDispatch, useSelector } from 'react-redux';
 
 

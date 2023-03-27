@@ -1,15 +1,15 @@
-import HomePage from '../../pages/main';
-import LoginPage from '../../pages/login';
+import HomePage from '../../pages/main/main';
+import LoginPage from '../../pages/login/login';
 import { Routes, Route } from 'react-router-dom';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredient } from '../../services/actions/burgerIngredientsAction';
 import { useEffect } from 'react';
-import RegisterPage from '../../pages/register';
-import ForgottenPasswordPage from '../../pages/forgot-password';
-import ResetPasswordPage from '../../pages/reset-password-page';
-import ProfilePage from '../../pages/profile';
-import IngredientsPage from '../../pages/ingredients-page';
+import RegisterPage from '../../pages/register/register';
+import ForgottenPasswordPage from '../../pages/forgot-password/forgot-password';
+import ResetPasswordPage from '../../pages/reset-password/reset-password-page';
+import ProfilePage from '../../pages/profile/profile';
+import IngredientsPage from '../../pages/ingredients/ingredients-page';
 import ProtectedRoute from '../Protected-route/ProtectedRoute';
 import { checkUserAccess } from '../../services/actions/userAction';
 
