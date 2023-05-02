@@ -60,8 +60,8 @@ export const CHANGE_USER_DATA_FORM_SUBMIT_FAILED =
 export function setRegisterFormValue(field, value) {
   return {
     type: USER_REGISTER_FORM_SET_VALUE,
-    value,
     field,
+    value,
   };
 }
 
