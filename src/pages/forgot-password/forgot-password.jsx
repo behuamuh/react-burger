@@ -1,7 +1,7 @@
-import AppHeader from "../components/AppHeader/AppHeader";
+
 import style from './forgot-password.module.css';
 import { EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { setForgotPasswordFormValue, forgotPassword } from "../services/actions/userAction";
+import { setForgotPasswordFormValue, forgotPassword } from "../../services/actions/userAction";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 
@@ -21,7 +21,6 @@ export default function ForgottenPasswordPage() {
 
     return (
         <>
-        <AppHeader/>
         <section className={style.section}>
             <div className={style.container}>
               <p className='text text_type_main-medium mb-6'>Восстановление пароля</p>

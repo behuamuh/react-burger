@@ -1,9 +1,8 @@
 import style from './register.module.css';
 import { useDispatch, useSelector} from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import AppHeader from '../components/AppHeader/AppHeader';
 import { Button, EmailInput, PasswordInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { setRegisterFormValue, registerUser } from '../services/actions/userAction';
+import { setRegisterFormValue,  registerUser } from '../../services/actions/userAction';
 
 
 
@@ -24,7 +23,7 @@ export default function RegisterPage() {
 
   return (
     <>
-      <AppHeader/>
+     
       <section className={style.main}>
          <div className={style.container}>
            <p className='text text_type_main-medium mb-6'>Регистрация</p>

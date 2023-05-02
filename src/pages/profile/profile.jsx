@@ -3,9 +3,8 @@ import { NavLink, useNavigate, useLocation, Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import style from './profile.module.css';
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import AppHeader from "../components/AppHeader/AppHeader";
-import { getCookie } from "../utils/cookie";
-import { logoutUser, changeUserData } from "../services/actions/userAction";
+import { getCookie } from "../../utils/cookie";
+import { logoutUser, changeUserData } from "../../services/actions/userAction";
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -26,8 +25,8 @@ export default function ProfilePage() {
         setUserDate({ name: user.name, email: user.email});
     }
 
-    function formOnChange() {
-       setUserDate({ name: user.name, email: user.email})
+    function formOnChange(e) {
+       setUserDate({ ...userData, [e.target.name]: e.target.value})
     }
 
     function checkButton() {
@@ -36,7 +35,7 @@ export default function ProfilePage() {
 
     return (
         <>
-        <AppHeader/>
+        
         <section className={style.section}>
             <div className={style.container}>
             <div className={style.column__nav}>
@@ -59,7 +58,7 @@ export default function ProfilePage() {
                 История заказов
                </NavLink>
                <NavLink
-                 onClick={() => dispatch(logoutUser(refreshToken, () => navigate('/login')))}  
+                 onClick={() => dispatch(logoutUser(() => navigate('/login')))}  
                  className={`text text_type_main-medium text_color_inactive ${style.link}`}
                >
                Выход
@@ -76,9 +75,10 @@ export default function ProfilePage() {
                   icon='EditIcon'
                   placeholder="Имя"
                   name='name'
-                  disabled={input.name ? false : true}
+                  value={userData.name}
+                  disabled={!input.name}
                   onChange={formOnChange}
-                  iconOnClick={() => setInput({...input, email: !input.email})}
+                  onIconClick={() => setInput({ ...input, name: !input.name })}
                 />
                 <Input
                   icon="EditIcon"
@@ -86,8 +86,8 @@ export default function ProfilePage() {
                   placeholder="Логин"
                   value={userData.email}
                   onChange={formOnChange}
-                  disabled={input.email ? false : true}
-                  iconOnClick={() => setInput({...input, email: !input.email})}
+                  disabled={!input.email}
+                  onIconClick={() => setInput({...input, email: !input.email})}
                 
                 />
                 <Input
@@ -96,6 +96,21 @@ export default function ProfilePage() {
                  disabled
                  value='******'
                 />
+                <div className={style.container__buttons}>
+                  <Button
+                  type='secondary'
+                  size='medium'
+                  htmlType="button"
+                  onClick={formOnReset}
+                  disabled={checkButton() ? true : false}
+                  >Отмена</Button>
+                  <Button
+                  type='primary'
+                  size='medium'
+                  htmlType="submit"
+                  disabled={checkButton() ? true : false}
+                  >Сохранить</Button>
+                </div>
            
                 </form>
 

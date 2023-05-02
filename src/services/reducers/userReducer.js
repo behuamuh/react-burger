@@ -118,7 +118,7 @@ export default function userReducer(state = initialState, action) {
                 user: {
                     ...state.user,
                     email: action.payload.email,
-                    name: action.paylod.name,
+                    name: action.payload.name,
                 },
                 isAuth: true,
             };
