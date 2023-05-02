@@ -1,5 +1,6 @@
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
+import { useEffect } from 'react';
 import orderStyles from './ConstructorOrder.module.css';
 import Modal  from '../Modal/Modal';
 import icon from '../../images/Subtract.svg';
@@ -9,25 +10,31 @@ import OrderDetails
  import { makeOrder } from '../../services/actions/currentOrderAction';
 import { useNavigate } from 'react-router-dom';
 
-
-
+import { checkUserAccess } from '../../services/actions/userAction';
 
 
 export default function ConstructorOrder({ price }) {
+
+
+
    const order = useSelector((store) => store.currentOrderReducer.order);
    const dispatch = useDispatch();
    const ingredients = useSelector((store) => store.burgerConstructorReducer);
-   const isAuth = useSelector((store) => store.burgerConstructorReducer);
+   const isAuth = useSelector((store) => store.userReducer.isAuth);
    const navigate = useNavigate();
+
+
     
    function closeModal() {
     dispatch({ type: RESET_ORDER });
    }
 
-   function sendOrder() {
+  function sendOrder() {
+    
     isAuth ? dispatch(makeOrder(ingredients)) : navigate('/login');
     
    }
+ 
 
    return (
         <div className={orderStyles.order}>

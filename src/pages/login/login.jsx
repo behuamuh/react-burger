@@ -22,6 +22,7 @@ export default function LoginPage() {
   function loginFormSubmit(e) {
     e.preventDefault();
     dispatch(loginUser(loginForm, () => navigate('/')));
+
     
   }
     return (
