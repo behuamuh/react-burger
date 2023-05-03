@@ -14,10 +14,18 @@ export function getCookie(name) {
 
 
 
-export function parseCookie(name) {
+{/*export function parseCookie(name) {
   let authToken;
   authToken = name.split("Bearer ")[1];
   return authToken;
+}*/}
+
+export function parseCookie(name) {
+  if (name && name.startsWith("Bearer ")) {
+    return name.split("Bearer ")[1];
+  } else {
+    throw new Error("Invalid access token format");
+  }
 }
 
 
