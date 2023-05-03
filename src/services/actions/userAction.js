@@ -154,7 +154,7 @@ export function checkUserAccess() {
 
 
 export function refreshUserToken(refreshToken) {
-  return function (dispatch) {
+  return async function (dispatch) {
     return refreshTokenRequest(refreshToken).then((res) => {
       setCookie("accessToken", parseCookie(res.accessToken));
       setCookie("refreshToken", res.refreshToken);
