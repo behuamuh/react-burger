@@ -1,11 +1,15 @@
 import { apiOrder } from "../../utils/api";
+import { refreshUserToken } from "./userAction";
+import { getCookie } from "../../utils/cookie";
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
 export const GET_ORDER_ERROR = 'GET_ORDER_ERROR';
 export const RESET_ORDER = 'RESET_ORDER';
+export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 
 export function makeOrder(ingredients) {
+    
     return function (dispatch) {
         const arrayId = [
             ingredients.constructorBunElement._id,
@@ -13,15 +17,29 @@ export function makeOrder(ingredients) {
             ingredients.constructorBunElement._id,
         ]
         dispatch({ type: GET_ORDER_REQUEST });
-        apiOrder(arrayId)
+        apiOrder(arrayId, getCookie('accessToken'))
          .then((res) => {
             dispatch({ type: GET_ORDER_SUCCESS, payload: res.order.number });
          })
-         .catch(() => {
-            dispatch({
-                type: GET_ORDER_ERROR,
-                errorText: 'Ошибка в формировании заказа'
-            });
+         .catch((err) => {
+            if (err.message ===  'jwt expired' || "jwt malformed") {
+                dispatch(refreshUserToken(getCookie('refreshToken'))).then(() => {
+                    apiOrder(arrayId, getCookie('accessToken'))
+                     .then((res)=> {
+                        dispatch({
+                            type: GET_ORDER_SUCCESS,
+                            payload: res.order.number,
+                        });
+                     })
+                    .catch(() => {
+                        dispatch({
+                            type: GET_ORDER_FAILED,
+                            errorText: "Ошибка при формировании заказа",
+                        });
+                    });
+                });
+            }
          });
     };
 }
+
