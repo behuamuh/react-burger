@@ -7,6 +7,8 @@ export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
 export const GET_ORDER_ERROR = 'GET_ORDER_ERROR';
 export const RESET_ORDER = 'RESET_ORDER';
 export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
+export const SET_CURRENT_ORDER = 'SET_CURRENT_ORDER';
+export const RESET_CURRENT_ORDER = 'RESET_CURRENT_ORDER';
 
 export function makeOrder(ingredients) {
     

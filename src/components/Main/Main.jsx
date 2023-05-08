@@ -13,11 +13,11 @@ import AppHeader from '../AppHeader/AppHeader';
 
 function Main() {
 
-const dispatch = useDispatch();
+{/*const dispatch = useDispatch();
 
 useEffect(() => {
   dispatch(getIngredient());
-}, [dispatch])
+}, [dispatch])*/}
 
 
 
