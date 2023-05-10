@@ -22,7 +22,7 @@ export default function OrderPage({ isAuth }) {
     return () => {
       dispatch(wsConnectionClose());
     };
-  }, []);
+  }, [dispatch, isAuth]);
 
   const orders = useSelector((store) => store.socketReducer.orders);
   const { id } = useParams();

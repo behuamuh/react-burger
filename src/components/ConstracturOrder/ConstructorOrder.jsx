@@ -10,7 +10,6 @@ import OrderDetails
  import { makeOrder } from '../../services/actions/currentOrderAction';
 import { useNavigate } from 'react-router-dom';
 
-import { checkUserAccess } from '../../services/actions/userAction';
 
 
 export default function ConstructorOrder({ price }) {

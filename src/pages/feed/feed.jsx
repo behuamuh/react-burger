@@ -1,4 +1,3 @@
-import AppHeader from "../../components/AppHeader/AppHeader";
 import OrderFeedList from "../../components/OrderFeedList/OrderFeedList";
 import {
   wsConnectionStart,
@@ -52,7 +51,7 @@ export default function FeedPage() {
     
       orders && (
         <>
-      <AppHeader />
+      
       <div className={styles.pageContainer}>
         <h1 className="text text_type_main-large pt-10 pb-5">Лента заказов</h1>
         <div className={styles.container}>

@@ -1,7 +1,5 @@
 import style from "./user-order.module.css";
 import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_CLOSE,
   wsConnectionStart,
   wsConnectionClose,
 } from "../../services/actions/socketAction";
@@ -20,7 +18,7 @@ export default function UserOrder() {
     return () => {
       dispatch(wsConnectionClose());
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (errorState) {
@@ -29,7 +27,7 @@ export default function UserOrder() {
         .then(() => dispatch(wsConnectionStart(WS_URL_PROFILE)))
         .catch(() => dispatch(wsConnectionClose()));
     }
-  }, [errorState]);
+  }, [errorState, dispatch]);
 
   return (
     orders && (

@@ -1,7 +1,6 @@
 
 import style from './ingredients-page.module.css';
 import IngredientDetails from "../../components/IngredientDetails/IngredientDetails";
-import HomePage from '../main/main';
 import { useSelector } from 'react-redux';
 import { useParams, useLocation, Navigate } from 'react-router-dom';
 

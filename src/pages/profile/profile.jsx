@@ -5,7 +5,6 @@ import style from './profile.module.css';
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getCookie } from "../../utils/cookie";
 import { logoutUser, changeUserData } from "../../services/actions/userAction";
-import AppHeader from "../../components/AppHeader/AppHeader";
 import { RESET_CURRENT_ORDER } from "../../services/actions/currentOrderAction";
 import Modal from "../../components/Modal/Modal";
 import BurgerDetails from "../../components/BurgerDetails/BurgerDetails";
@@ -46,7 +45,7 @@ export default function ProfilePage() {
 
     return (
         <>
-        <AppHeader/>
+        
         <section className={style.section}>
             <div className={style.container}>
             <div className={style.column__nav}>
@@ -60,7 +59,7 @@ export default function ProfilePage() {
                 Профиль
                 </NavLink>
                 <NavLink
-                 to='order-page'
+                 to='orders'
                  className={`text text_type_main-medium text_color_inactive ${style.link}`}
                  style={({ isActive }) => (isActive ? activeStyle : undefined)}
                  state={{ order: true }}

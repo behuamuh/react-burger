@@ -1,4 +1,4 @@
-import { compose,  applyMiddleware } from 'redux';
+{/*import { compose,  applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { rootReducer } from './reducers/index';
 import { configureStore } from '@reduxjs/toolkit';
@@ -30,5 +30,5 @@ const composeEnhancers =
 const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsActions)));
 
 
-export const store = configureStore({reducer: rootReducer}, enhancer);
+export const store = configureStore({reducer: rootReducer}, enhancer);*/}
 

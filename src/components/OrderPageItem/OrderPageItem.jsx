@@ -18,6 +18,7 @@ export default function OrderPageItem(ingredient, counter) {
       </div>
       <div className={style.container_counter}>
         <p className="text text_type_digits-default">{`${counter} x ${ingredient.price}`}</p>
+        <CurrencyIcon type="primary" />
       </div>
     </li>
   );

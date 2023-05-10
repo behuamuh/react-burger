@@ -19,6 +19,7 @@ export default function OrderIngredientsList({ ingredients }) {
                           ingredient={item}
                           index={index}
                           key={uuidv4()}
+                          length={ingredients.length}
                           showCounter={false}
                         />
                     );
@@ -28,10 +29,14 @@ export default function OrderIngredientsList({ ingredients }) {
                          ingredient={item}
                          index={index}
                          key={uuidv4()}
+                         length={ingredients.length}
                          extraClass={style.opacity}
                          showCounter={showCounter()}
                         />
                     )
+                }
+                else {
+                    return null;
                 }
             })}
 

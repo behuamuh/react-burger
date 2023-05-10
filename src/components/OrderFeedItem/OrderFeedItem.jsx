@@ -9,7 +9,7 @@ import useOrder from "../../hooks/useOrder";
 import cn from "classnames";
 
 export default function OrderFeedItem({ isFeedList, order }) {
-  const { OrderIngredientsList, orderPrice, orderStatus } = useOrder(order);
+  const { orderIngredientsList, orderPrice, orderStatus } = useOrder(order);
   const location = useLocation();
 
   const curOffset = new Date().getTimezoneOffset() / 60;
@@ -26,7 +26,14 @@ export default function OrderFeedItem({ isFeedList, order }) {
             : { locationFeed: location }
         }
       >
-        <div className={style.container_order}>
+        
+        <div className={style.container__order}>
+          <p className="text text_type_digits-default">{`#${order.number}`}</p>
+          <p className="text text_type_main-default text_color_inactive">
+            <FormattedDate date={new Date(order.createdAt)} /> {`${GMT}`}
+          </p>
+        </div>
+        <div className={style.container_burger}>
           <p className="text text_type_main-medium">{order.name}</p>
           {isFeedList && (
             <p
@@ -39,7 +46,7 @@ export default function OrderFeedItem({ isFeedList, order }) {
           )}
         </div>
         <div className={style.container_ingredients}>
-          <OrderIngredientsList ingredients={OrderIngredientsList} />
+          <OrderIngredientsList ingredients={orderIngredientsList} />
           <div className={style.price}>
             <CurrencyIcon type="primary" />
             <p className="text text_type_digits-default">{orderPrice}</p>

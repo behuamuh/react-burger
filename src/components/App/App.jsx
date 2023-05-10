@@ -17,6 +17,7 @@ import FeedPage from "../../pages/feed/feed";
 import OrderPage from "../../pages/order-page/order-page";
 import UserOrder from "../../pages/user-order/user-order";
 import Modal from "../Modal/Modal";
+import Layout from "../../pages/layout";
 
 function App() {
   const dispatch = useDispatch();
@@ -42,57 +43,59 @@ function App() {
   return (
     <>
       <Routes location={background}>
-        <Route path="/" element={<HomePage />} />
-        <Route
-          path="/login"
-          element={
-            <ProtectedRoute isAuth={!isAuth} to="/">
-              <LoginPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <ProtectedRoute isAuth={!isAuth} to="/">
-              <RegisterPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/forgot-password"
-          element={
-            <ProtectedRoute isAuth={!isAuth} to="/">
-              <ForgottenPasswordPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/reset-password"
-          element={
-            <ProtectedRoute isAuth={resetEmailSent} to="/login">
-              <ResetPasswordPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute isAuth={isAuth} to="/login">
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="orders" element={<UserOrder />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/feed" element={<FeedPage />} />
+          <Route path="feed/:id" element={<OrderPage isAuth={false} />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute isAuth={isAuth} to="/login">
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="orders" element={<UserOrder />} />
+            <Route
+              path="profile/orders/:id"
+              element={<OrderPage isAuth={true} />}
+            />
+          </Route>
+          <Route
+            path="/login"
+            element={
+              <ProtectedRoute isAuth={!isAuth} to="/">
+                <LoginPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <ProtectedRoute isAuth={!isAuth} to="/">
+                <RegisterPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <ProtectedRoute isAuth={!isAuth} to="/">
+                <ForgottenPasswordPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <ProtectedRoute isAuth={resetEmailSent} to="/login">
+                <ResetPasswordPage />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
-        <Route
-          path="profile/orders/:id"
-          element={<OrderPage isAuth={true} />}
-        />
         <Route path="/ingredients/:id" element={<IngredientsPage />} />
-        <Route path="/feed" element={<FeedPage />} />
-        <Route path="feed/:id" element={<OrderPage isAuth={false} />} />
       </Routes>
       {location.state?.locationIngredient && (
         <Routes>

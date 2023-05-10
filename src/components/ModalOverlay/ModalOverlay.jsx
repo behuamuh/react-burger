@@ -1,10 +1,7 @@
-import stylesOverlay from './ModalOverlay.module.css';
-import PropTypes from 'prop-types';
+import stylesOverlay from "./ModalOverlay.module.css";
 
 function ModalOverlay({ onCloseModal }) {
-    return (
-        <div className={stylesOverlay.overlay} onClick={onCloseModal}></div>
-    )
+  return <div className={stylesOverlay.overlay} onClick={onCloseModal}></div>;
 }
 
 export default ModalOverlay;

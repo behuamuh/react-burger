@@ -1,21 +1,21 @@
-const BASE_URL = "https://norma.nomoreparties.space/api/ingredients";
-const ORDER_URL = "https://norma.nomoreparties.space/api/orders";
-const REGISTER_URL = "https://norma.nomoreparties.space/api/auth/register";
-const LOGIN_URL = "https://norma.nomoreparties.space/api/auth/login";
-const LOGOUT_URL = "https://norma.nomoreparties.space/api/auth/logout";
-const TOKEN_URL = "https://norma.nomoreparties.space/api/auth/token";
-const CHECK_ACCESS_URL = "https://norma.nomoreparties.space/api/auth/user";
-const RESET_PASSWORD_URL =
-  "https://norma.nomoreparties.space/api/password-reset/reset";
-const FORGOT_PASSWORD_URL =
-  "https://norma.nomoreparties.space/api/password-reset";
+import {
+  INGREDIENTS_URL,
+  ORDER_URL,
+  REGISTER_URL,
+  LOGIN_URL,
+  LOGOUT_URL,
+  TOKEN_URL,
+  CHECK_ACCESS_URL,
+  FORGOT_PASSWORD_URL,
+  RESET_PASSWORD_URL,
+} from "../utils/variables";
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
 };
 
 const getIngredients = async () => {
-  return fetch(`${BASE_URL}`).then(checkResponse);
+  return fetch(`${INGREDIENTS_URL}`).then(checkResponse);
 };
 
 /*const apiOrder = async (arrayId) => { //переписать с учетом токена
@@ -84,26 +84,7 @@ const checkUserAccessRequest = async (accessToken) => {
   }).then(checkResponse);
 };
 
-{
-  /*const checkToken = async (token) => {
-    const response = await fetch('https://norma.nomoreparties.space/api/orders', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    
-    if (response.status === 200) {
-      console.log('Токен доступа действителен!');
-      return true;
-    } else {
-      console.log('Токен доступа недействителен!');
-      return false;
-    }
-  };
 
-checkToken();*/
-}
 
 const refreshTokenRequest = async (refreshToken) => {
   return fetch(TOKEN_URL, {
