@@ -9,7 +9,8 @@ import {
   wsConnectionClose,
 } from "../../services/actions/socketAction";
 import BurgerDetails from "../../components/BurgerDetails/BurgerDetails";
-import { WS_URL_ALL, WS_URL_PROFILE } from "../../utils/variables";
+import { WS_URL_ALL} from "../../utils/variables";
+import { getSocketUrl } from "../../utils/variables";
 
 export default function OrderPage({ isAuth }) {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ export default function OrderPage({ isAuth }) {
   useEffect(() => {
     dispatch(getIngredient());
     isAuth
-      ? dispatch(wsConnectionStart(WS_URL_PROFILE))
+      ? dispatch(wsConnectionStart(getSocketUrl()))
       : dispatch(wsConnectionStart(WS_URL_ALL));
     return () => {
       dispatch(wsConnectionClose());

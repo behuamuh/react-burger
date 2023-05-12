@@ -4,14 +4,25 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import stylesModal from './Modal.module.css';
 import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 
 const modalRoot = document.getElementById('react-modals');
 
-function Modal({children, onCloseModal}) {
+function Modal({children, onCloseModal, route}) {
+  const navigate = useNavigate();
+  
   function handleEscClose(e) {
     if (e.key  === 'Escape') {
         onCloseModal(e);
+    }
+  }
+
+  function handleClose(evt) {
+    if(route) {
+      return navigate(-1);
+    } else {
+      onCloseModal(evt)
     }
   }
 
@@ -32,12 +43,12 @@ function Modal({children, onCloseModal}) {
         (
           <>
           <div className={stylesModal.container} onClick={(e) => e.stopPropagation()}>
-            <button type='button' className={stylesModal.button} onClick={onCloseModal}>
+            <button type='button' className={stylesModal.button} onClick={handleClose}>
                 <CloseIcon />
             </button>
               {children}
           </div>
-             <ModalOverlay onCloseModal={onCloseModal}/>
+             <ModalOverlay onCloseModal={(evt) => handleClose(evt)}/>
           
           </>  
 
@@ -47,7 +58,7 @@ function Modal({children, onCloseModal}) {
 }
 
 Modal.propTypes = {
-  onCloseModal: PropTypes.func.isRequired,
+  
   children: PropTypes.element.isRequired,
 }
 

@@ -3,7 +3,6 @@ import { getCookie } from "./cookie";
 
 
 const BASE_API_URL = "https://norma.nomoreparties.space/api";
-const BASE_WS_URL = "wss://norma.nomoreparties.space/orders";
 const INGREDIENTS_URL = `${BASE_API_URL}/ingredients`;
 const ORDER_URL = `${BASE_API_URL}/orders`;
 const REGISTER_URL = `${BASE_API_URL}/auth/register`;
@@ -14,8 +13,13 @@ const CHECK_ACCESS_URL = `${BASE_API_URL}/auth/user`;
 const FORGOT_PASSWORD_URL = `${BASE_API_URL}/password-reset`;
 const RESET_PASSWORD_URL = `${BASE_API_URL}/password-reset/reset`;
 
+const BASE_WS_URL = "wss://norma.nomoreparties.space/orders";
 const WS_URL_ALL = `${BASE_WS_URL}/all`;
-const WS_URL_PROFILE = `${BASE_WS_URL}?token=${getCookie("accessToken")}.replace("Bearer ", "")}`;
+
+const getSocketUrl = () => {
+  const accessToken = getCookie("accessToken").replace("Bearer ", "");
+  return `${BASE_WS_URL}?token=${accessToken}`;
+};
 
 
 export {
@@ -29,5 +33,5 @@ export {
   FORGOT_PASSWORD_URL,
   RESET_PASSWORD_URL,
   WS_URL_ALL,
-  WS_URL_PROFILE,
+  getSocketUrl
 };

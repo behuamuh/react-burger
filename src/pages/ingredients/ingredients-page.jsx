@@ -1,8 +1,8 @@
-
 import style from './ingredients-page.module.css';
 import IngredientDetails from "../../components/IngredientDetails/IngredientDetails";
 import { useSelector } from 'react-redux';
 import { useParams, useLocation, Navigate } from 'react-router-dom';
+import HomePage from '../main/main';
 
 export default function IngredientsPage() {
     const ingredients = useSelector((store) => store.burgerIngredientsReducer.burgerIngredientsList);
@@ -11,7 +11,7 @@ export default function IngredientsPage() {
     const location = useLocation();
     
     return location.state?.from === "/" ? (
-        <Navigate to='/' />
+        <HomePage />
       ) : (
         currentIngredient && (
           <>

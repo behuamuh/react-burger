@@ -10,6 +10,8 @@ import {
   RESET_PASSWORD_URL,
 } from "../utils/variables";
 
+import { setCookie } from "./cookie";
+
 const checkResponse = (res) => {
   return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
 };
@@ -29,9 +31,29 @@ const getIngredients = async () => {
         }),
     }).then(checkResponse);
 }*/
+export const fetchWithRefresh = async (url, options) => {
+  try {
+    const res = await fetch(url, options);
+    return await checkResponse(res);
+  } catch (err) {
+    if (err.message === 'jwt expired') {
+      const refreshData = await refreshTokenRequest();
+      if (!refreshData.success) {
+        return Promise.reject(refreshData);
+      }
+      setCookie('refreshToken', refreshData.refreshToken);
+      setCookie('accessCookie', refreshData.accessToken);
+      options.headers.authorization = refreshData.accessToken;
+      const res = await fetch(url, options);
+      return await checkResponse(res);
+    } else {
+      return Promise.reject(err);
+    }
+  }
+}
 
 const apiOrder = async (arrayId, accessToken) => {
-  return fetch(ORDER_URL, {
+  return fetchWithRefresh(ORDER_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

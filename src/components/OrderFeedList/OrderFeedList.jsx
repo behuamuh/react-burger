@@ -9,7 +9,7 @@ export default function OrderFeedList({ listClassName, isFeedList, orders}) {
          {orders.map((order) => {
             return (
                 <OrderFeedItem
-                key={uuidv4}
+                key={uuidv4()}
                 isFeedList={isFeedList}
                 order={order}
                 />

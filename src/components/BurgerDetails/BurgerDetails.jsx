@@ -7,8 +7,9 @@ import OrderPageList from "../OrderPageList/OrderPageList";
 
 export default function BurgerDetails({ titleClassName }) {
   const orders = useSelector((store) => store.socketReducer.orders);
-  const order = orders.find((item) => item.id === id);
   const { id } = useParams();
+  const order = orders.find((item) => item.id === id);
+  
 
   const { orderIngredienstList, orderPrice, orderStatus, orderDate } =
     useOrder(order);

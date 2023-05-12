@@ -56,11 +56,12 @@ function App() {
             }
           >
             <Route path="orders" element={<UserOrder />} />
-            <Route
-              path="profile/orders/:id"
-              element={<OrderPage isAuth={true} />}
-            />
           </Route>
+          <Route
+            path="profile/orders/:id"
+            element={<OrderPage isAuth={true} />}
+          />
+
           <Route
             path="/login"
             element={
@@ -93,9 +94,9 @@ function App() {
               </ProtectedRoute>
             }
           />
-        </Route>
 
-        <Route path="/ingredients/:id" element={<IngredientsPage />} />
+          <Route path="/ingredients/:id" element={<IngredientsPage />} />
+        </Route>
       </Routes>
       {location.state?.locationIngredient && (
         <Routes>

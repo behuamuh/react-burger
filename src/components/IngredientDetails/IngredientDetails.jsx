@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 
 
 function IngredientDetails() { //попап с наполнителем
-  const ingredient = useSelector((store) => store.currentIngredientReducer.currentIngredient);
+  const ingredient = useSelector((store) => store.burgerIngredientsReducer.burgerIngrediensList);
 
     return (
-        <>
+       ingredient && (<>
           <p className={`${stylesIngredinentDetails.title} text text_type_main-large`}>Детали ингредиента</p>
           <img 
             className={stylesIngredinentDetails.image}
@@ -40,9 +40,10 @@ function IngredientDetails() { //попап с наполнителем
         
         
         
-        </>
+        </>)
     )
 }
+
 
 
 

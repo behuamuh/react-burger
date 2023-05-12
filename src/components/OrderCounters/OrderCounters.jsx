@@ -39,6 +39,10 @@ export default function OrderCounters({
           </ul>
         </div>
       </div>
+      <div className={style.container__digit}>
+        <p className="text text_type_main-medium">Выполнено за все время:</p>
+        <p className={`text text_type_digits-large ${style.digit}`}>{total}</p>
+      </div>
       <div className={style.container_digit}>
         <p className="text text_type_main-medium">Выполнено за сегодня:</p>
         <p className={`text text_type_digits-large ${style.digit}`}>
